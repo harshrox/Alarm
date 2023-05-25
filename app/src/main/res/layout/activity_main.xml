@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#9A68D3">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:layout_marginTop="60dp"
+        android:padding="30dp"
+        android:textSize="30dp"
+        android:text="A simple alarm app which pops up a toast message once the time is up."
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Enter time in 24 hour format"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/timeInput"
+        android:layout_centerHorizontal="true"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:hint="HH:MM"
+        android:inputType="datetime"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:textColorHint="@color/white"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="5dp"
+        android:id="@+id/timeInput"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter"
+        android:backgroundTint="#27B62E"
+        android:layout_below="@+id/timeInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnDone"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Time is up"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:layout_below="@+id/btnDone"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:textSize="40dp"-->
+<!--        android:id="@+id/txtResult"-->
+<!--        android:visibility="invisible"/>-->
+
+
+
+</RelativeLayout>
