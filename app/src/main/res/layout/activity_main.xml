@@ -58,6 +58,48 @@
 <!--        android:id="@+id/txtResult"-->
 <!--        android:visibility="invisible"/>-->
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Important info"
+            android:textSize="15dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="#850606"
+            android:layout_below="@+id/btnDone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:id="@+id/btnInfo"
+            android:visibility="visible"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="It is requested to not click on the input box or enter button when the alarm is already set as it might crash the app. Please give input only when the previous timer is up."
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:paddingHorizontal="30dp"
+            android:textColor="@color/black"
+            android:layout_below="@+id/btnDone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:id="@+id/txtInfo"
+            android:visibility="invisible"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close"
+            android:textSize="17dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="#850606"
+            android:layout_below="@+id/btnDone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:id="@+id/btnClose"
+            android:visibility="invisible"/>
+
+
+
+
+
 
 
 </RelativeLayout>

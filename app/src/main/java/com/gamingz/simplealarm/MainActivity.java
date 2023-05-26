@@ -2,6 +2,7 @@ package com.gamingz.simplealarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     EditText editText;
     Button button;
+    TextView btnInfo;
+    TextView txtInfo;
+    TextView btnClose;
 //    TextView result;
     String timeEntered;
     int hourEntered;
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +111,30 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+        btnInfo = findViewById(R.id.btnInfo);
+        txtInfo = findViewById(R.id.txtInfo);
+        btnClose = findViewById(R.id.btnClose);
+
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnInfo.setVisibility(View.INVISIBLE);
+                txtInfo.setVisibility(View.VISIBLE);
+                btnClose.setVisibility(View.VISIBLE);
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnInfo.setVisibility(View.VISIBLE);
+                txtInfo.setVisibility(View.INVISIBLE);
+                btnClose.setVisibility(View.INVISIBLE);
+            }
+        });
+
+
 
 
     }
