@@ -60,8 +60,24 @@ public class MainActivity extends AppCompatActivity {
                 int minuteCalc = totalMinute%60;
 
                 String minToast = minuteCalc+" minute(s) remaining";
-                String hourToast = hourCalc+" hour(s) and "+minuteCalc+" minutes remaining";
-                if(hourCalc==0){
+                String hourToast = hourCalc+" hour(s) and "+minuteCalc+" minute(s) remaining";
+
+                // When time entered is less than real time (when timer is set for next day)
+                if(minuteCalc<0){
+                    int totalMinuteNew = (24*60)+totalMinute;
+                    int hourCalcNew = totalMinuteNew/60;
+                    int minuteCalcNew = totalMinuteNew%60;
+                    String minToastNew = minuteCalcNew+" minute(s) remaining";
+                    String hourToastNew = hourCalcNew+" hour(s) and "+minuteCalcNew+" minute(s) remaining";
+                    if(hourCalcNew==0){
+                        Toast.makeText(this, minToastNew, Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(this, hourToastNew, Toast.LENGTH_LONG).show();
+                    }
+                }
+                // When timer is set for same day
+                else if(hourCalc==0){
                     Toast.makeText(this, minToast, Toast.LENGTH_LONG).show();
                 }
                 else{
