@@ -3,6 +3,7 @@ package com.gamingz.simplealarm;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,13 +15,13 @@ import java.util.Calendar;
 import android.content.Context;
 public class MainActivity extends AppCompatActivity {
 
-
+    MediaPlayer player;
     EditText editText;
     Button button;
     TextView btnInfo;
     TextView txtInfo;
     TextView btnClose;
-//    TextView result;
+    //    TextView result;
     String timeEntered;
     int hourEntered;
     int minEntered;
@@ -89,7 +90,12 @@ public class MainActivity extends AppCompatActivity {
             String timeReal = (hour+":"+minute).toString();
 
             if((hourEntered==hour) && (minEntered==minute)){
+                if(player!=null){
+                    player.release();
+                    player = null;
+                }
                 Toast.makeText(this, "Time is up", Toast.LENGTH_LONG).show();
+                play();
 //                result.setVisibility(View.VISIBLE);
                 flag=0;
             }
@@ -106,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+    public void play(){
+        player = MediaPlayer.create(this, R.raw.alarm);
+        player.start();
+    }
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
