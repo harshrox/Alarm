@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,16 +19,14 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer player;
     EditText editText;
     Button button;
-    TextView btnInfo;
-    TextView txtInfo;
-    TextView btnClose;
     //    TextView result;
     String timeEntered;
     int hourEntered;
     int minEntered;
     int diffMin;
     int diffHour;
-    public void ButtonClick(String time){
+    Thread thread = null;
+    public void ButtonClick(){
 
         timeEntered = editText.getText().toString();
         String[] parts = timeEntered.split(":");
@@ -36,7 +35,13 @@ public class MainActivity extends AppCompatActivity {
             minEntered = Integer.parseInt(parts[1]);
         }
         catch (Exception e ){
-            Toast.makeText(this, "Invalid", Toast.LENGTH_SHORT).show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
 
         Calendar calendarInitial = Calendar.getInstance();
@@ -71,18 +76,43 @@ public class MainActivity extends AppCompatActivity {
                     String minToastNew = minuteCalcNew+" minute(s) remaining";
                     String hourToastNew = hourCalcNew+" hour(s) and "+minuteCalcNew+" minute(s) remaining";
                     if(hourCalcNew==0){
-                        Toast.makeText(this, minToastNew, Toast.LENGTH_LONG).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, minToastNew, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                     else{
-                        Toast.makeText(this, hourToastNew, Toast.LENGTH_LONG).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, hourToastNew, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                 }
                 // When timer is set for same day
                 else if(hourCalc==0){
-                    Toast.makeText(this, minToast, Toast.LENGTH_LONG).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, minToast, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
                 else{
-                    Toast.makeText(this, hourToast, Toast.LENGTH_LONG).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, hourToast, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
                 }
                 timeLoop--;
 
@@ -94,7 +124,14 @@ public class MainActivity extends AppCompatActivity {
                     player.release();
                     player = null;
                 }
-                Toast.makeText(this, "Time is up", Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_SHORT).show();
+                        thread=null;
+                    }
+                });
+
                 play();
 //                result.setVisibility(View.VISIBLE);
                 flag=0;
@@ -129,35 +166,30 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timeEntered = editText.getText().toString();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-                ButtonClick(timeEntered);
+
+                if(thread==null){
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            timeEntered = editText.getText().toString();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                            ButtonClick();
+                        }
+                    };
+                    thread = new Thread(runnable);
+                    thread.start();
+
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Active alarm detected", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
 
 
-        btnInfo = findViewById(R.id.btnInfo);
-        txtInfo = findViewById(R.id.txtInfo);
-        btnClose = findViewById(R.id.btnClose);
 
-        btnInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnInfo.setVisibility(View.INVISIBLE);
-                txtInfo.setVisibility(View.VISIBLE);
-                btnClose.setVisibility(View.VISIBLE);
-            }
-        });
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnInfo.setVisibility(View.VISIBLE);
-                txtInfo.setVisibility(View.INVISIBLE);
-                btnClose.setVisibility(View.INVISIBLE);
-            }
-        });
 
 
 
