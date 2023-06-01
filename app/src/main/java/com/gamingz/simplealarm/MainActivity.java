@@ -18,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     MediaPlayer player;
     EditText editText;
-    Button button;
-    //    TextView result;
+    Button set;
+    Button delete;
+    Button stop;
     String timeEntered;
     int hourEntered;
     int minEntered;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -51,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         int timeLoop=minEntered-minuteInitial;
 
         int flag=1;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, "Alarm has been set", Toast.LENGTH_SHORT).show();
+            }
+        });
         while(flag==1){
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, minToastNew, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, minToastNew, Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -88,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, hourToastNew, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, hourToastNew, Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, minToast, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, minToast, Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -108,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, hourToast, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, hourToast, Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -127,13 +135,12 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_LONG).show();
+                        stop.setVisibility(View.VISIBLE);
                         thread=null;
                     }
                 });
-
                 play();
-//                result.setVisibility(View.VISIBLE);
                 flag=0;
             }
             else{
@@ -150,8 +157,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void play(){
-        player = MediaPlayer.create(this, R.raw.alarm);
+        player = MediaPlayer.create(this, R.raw.radar);
+        player.setLooping(true);
         player.start();
+    }
+    public void stop() {
+        if (player != null && player.isPlaying()) {
+            player.stop();
+            player.release();
+            player = null;
+        }
     }
     @SuppressLint("MissingInflatedId")
     @Override
@@ -160,10 +175,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         editText = findViewById(R.id.timeInput);
-        button = findViewById(R.id.btnDone);
-//        result = findViewById(R.id.txtResult);
+        set = findViewById(R.id.btnDone);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -185,6 +199,35 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Active alarm detected", Toast.LENGTH_SHORT).show();
                 }
 
+            }
+        });
+
+        delete = findViewById(R.id.btnDelete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(thread!=null){
+                    thread.interrupt();
+                    thread=null;
+                    Toast.makeText(MainActivity.this, "Alarm has been deleted", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "No alarm detected", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        stop = findViewById(R.id.btnStop);
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stop();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                stop.setVisibility(View.INVISIBLE);
             }
         });
 

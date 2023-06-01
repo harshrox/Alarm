@@ -15,7 +15,8 @@
         android:layout_marginTop="60dp"
         android:padding="30dp"
         android:textSize="30dp"
-        android:text="A simple alarm app which pops up a toast message once the time is up."
+        android:text="A simple alarm app."
+        android:fontFamily="sans-serif-condensed"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="wrap_content"
@@ -26,37 +27,48 @@
         android:layout_above="@+id/timeInput"
         android:layout_centerHorizontal="true"/>
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:hint="HH:MM"
         android:inputType="datetime"
+        android:gravity="center"
         android:textColor="@color/white"
         android:background="@color/black"
         android:textColorHint="@color/white"
-        android:paddingHorizontal="30dp"
+        android:paddingHorizontal="28dp"
         android:paddingVertical="5dp"
         android:id="@+id/timeInput"/>
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Enter"
+        android:text="Set Alarm"
         android:backgroundTint="#27B62E"
         android:layout_below="@+id/timeInput"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:id="@+id/btnDone"/>
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Time is up"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:layout_below="@+id/btnDone"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="100dp"-->
-<!--        android:textSize="40dp"-->
-<!--        android:id="@+id/txtResult"-->
-<!--        android:visibility="invisible"/>-->
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Delete Alarm"
+        android:backgroundTint="#27B62E"
+        android:layout_below="@+id/btnDone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnDelete"/>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Stop Alarm"
+        android:backgroundTint="#27B62E"
+        android:layout_below="@+id/btnDelete"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btnStop"
+        android:visibility="invisible"/>
+
 
 
 
