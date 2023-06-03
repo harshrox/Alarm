@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button set;
     Button delete;
     Button stop;
+    TextView remainingTime;
     String timeEntered;
     int hourEntered;
     int minEntered;
@@ -34,60 +35,80 @@ public class MainActivity extends AppCompatActivity {
         try {
             hourEntered = Integer.parseInt(parts[0]);
             minEntered = Integer.parseInt(parts[1]);
-        }
-        catch (Exception e ){
+            Calendar calendarInitial = Calendar.getInstance();
+            int hourInitial = calendarInitial.get(Calendar.HOUR_OF_DAY); // 24-hour format
+            int minuteInitial = calendarInitial.get(Calendar.MINUTE);
+
+            int flag=1;
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Alarm has been set", Toast.LENGTH_SHORT).show();
                 }
             });
+            while(flag==1){
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
+                int minute = calendar.get(Calendar.MINUTE);
 
-        }
+                if(hourEntered<hour){
+                    diffHour = 24+(hourEntered-hour);
+                }
+                else{
+                    diffHour = hourEntered - hour;
+                }
 
-        Calendar calendarInitial = Calendar.getInstance();
-        int hourInitial = calendarInitial.get(Calendar.HOUR_OF_DAY); // 24-hour format
-        int minuteInitial = calendarInitial.get(Calendar.MINUTE);
+                diffMin = minEntered - minute;
 
-        int timeLoop=minEntered-minuteInitial;
+                if(minute==0){
+                    minuteInitial=0;
+                }
 
-        int flag=1;
+                int totalMinute = (diffHour*60)-(minute-minEntered);
+                if(totalMinute!=0 && minute==minuteInitial){
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, "Alarm has been set", Toast.LENGTH_SHORT).show();
-            }
-        });
-        while(flag==1){
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY); // 24-hour format
-            int minute = calendar.get(Calendar.MINUTE);
+                    int hourCalc = totalMinute/60;
+                    int minuteCalc = totalMinute%60;
 
-            diffHour = hourEntered - hour;
-            diffMin = minEntered - minute;
+                    String minToast = "Remaining: "+minuteCalc+" minute(s)";
+                    String hourToast = "Remaining: "+hourCalc+" hour(s) and "+minuteCalc+" minute(s)";
 
-            int totalMinute = (diffHour*60)-(minute-minEntered);
-            if(totalMinute!=0 && diffMin==timeLoop){
+                    // When time entered is less than real time (when timer is set for next day)
+                    if(minuteCalc<0){
+                        int totalMinuteNew = (24*60)+totalMinute;
+                        int hourCalcNew = totalMinuteNew/60;
+                        int minuteCalcNew = totalMinuteNew%60;
+                        String minToastNew = "Remaining: "+minuteCalcNew+" minute(s)";
+                        String hourToastNew = "Remaining: "+hourCalcNew+" hour(s) and "+minuteCalcNew+" minute(s)";
+                        if(hourCalcNew==0){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    remainingTime.setText(minToastNew);
+                                    remainingTime.setVisibility(View.VISIBLE);
+                                }
+                            });
 
-                int hourCalc = totalMinute/60;
-                int minuteCalc = totalMinute%60;
+                        }
+                        else{
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    remainingTime.setText(hourToastNew);
+                                    remainingTime.setVisibility(View.VISIBLE);
+                                }
+                            });
 
-                String minToast = minuteCalc+" minute(s) remaining";
-                String hourToast = hourCalc+" hour(s) and "+minuteCalc+" minute(s) remaining";
-
-                // When time entered is less than real time (when timer is set for next day)
-                if(minuteCalc<0){
-                    int totalMinuteNew = (24*60)+totalMinute;
-                    int hourCalcNew = totalMinuteNew/60;
-                    int minuteCalcNew = totalMinuteNew%60;
-                    String minToastNew = minuteCalcNew+" minute(s) remaining";
-                    String hourToastNew = hourCalcNew+" hour(s) and "+minuteCalcNew+" minute(s) remaining";
-                    if(hourCalcNew==0){
+                        }
+                    }
+                    // When timer is set for same day
+                    else if(hourCalc==0){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, minToastNew, Toast.LENGTH_LONG).show();
+                                remainingTime.setText(minToast);
+                                remainingTime.setVisibility(View.VISIBLE);
                             }
                         });
 
@@ -96,64 +117,56 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, hourToastNew, Toast.LENGTH_LONG).show();
+                                remainingTime.setText(hourToast);
+                                remainingTime.setVisibility(View.VISIBLE);
                             }
                         });
 
+
                     }
+                    minuteInitial++;
+
                 }
-                // When timer is set for same day
-                else if(hourCalc==0){
+                String timeReal = (hour+":"+minute).toString();
+
+                if((hourEntered==hour) && (minEntered==minute)){
+                    if(player!=null){
+                        player.release();
+                        player = null;
+                    }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(MainActivity.this, minToast, Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_SHORT).show();
+                            stop.setVisibility(View.VISIBLE);
+                            remainingTime.setVisibility(View.INVISIBLE);
+                            thread=null;
                         }
                     });
-
+                    play();
+                    flag=0;
                 }
                 else{
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, hourToast, Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-
-                }
-                timeLoop--;
-
-            }
-            String timeReal = (hour+":"+minute).toString();
-
-            if((hourEntered==hour) && (minEntered==minute)){
-                if(player!=null){
-                    player.release();
-                    player = null;
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "Time is up", Toast.LENGTH_LONG).show();
-                        stop.setVisibility(View.VISIBLE);
-                        thread=null;
+                    try {
+                        Thread.sleep(1000);
                     }
-                });
-                play();
-                flag=0;
-            }
-            else{
-                try {
-                    Thread.sleep(1000);
+                    catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
-                catch (InterruptedException e){
-                    e.printStackTrace();
-                }
+
             }
+        }
+        catch (Exception e ){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Invalid", Toast.LENGTH_LONG).show();
+                    thread=null;
+                }
+            });
 
         }
-
 
     }
     public void play(){
@@ -176,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.timeInput);
         set = findViewById(R.id.btnDone);
+
+        remainingTime = findViewById(R.id.remTime);
 
         set.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                     thread.interrupt();
                     thread=null;
                     Toast.makeText(MainActivity.this, "Alarm has been deleted", Toast.LENGTH_SHORT).show();
+                    remainingTime.setVisibility(View.INVISIBLE);
                 }
                 else{
                     Toast.makeText(MainActivity.this, "No alarm detected", Toast.LENGTH_SHORT).show();

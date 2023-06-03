@@ -8,37 +8,41 @@
     android:background="#9A68D3">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
-        android:layout_marginTop="60dp"
-        android:padding="30dp"
-        android:textSize="30dp"
-        android:text="A simple alarm app."
+        android:layout_marginTop="90dp"
         android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"/>
+        android:paddingHorizontal="70dp"
+        android:text="A simple alarm app."
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:textStyle="bold" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:text="Enter time in 24 hour format"
-        android:layout_marginBottom="5dp"
-        android:layout_above="@+id/timeInput"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginTop="250dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/info"/>
+
     <EditText
+        android:id="@+id/timeInput"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/info"
         android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:background="@color/black"
+        android:gravity="center"
         android:hint="HH:MM"
         android:inputType="datetime"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@color/black"
-        android:textColorHint="@color/white"
         android:paddingHorizontal="28dp"
         android:paddingVertical="5dp"
-        android:id="@+id/timeInput"/>
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
     <Button
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -68,6 +72,21 @@
         android:layout_marginTop="20dp"
         android:id="@+id/btnStop"
         android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btnStop"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:paddingHorizontal="70dp"
+        android:textSize="25dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
+        android:id="@+id/remTime"/>
+
 
 
 
